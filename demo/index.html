@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Waveform | CoCreate</title>
+        <link rel="stylesheet" href="index.css" />
+    </head>
+    <body>
+        <main id="page-wrapper">
+            <header>
+                <p class="eyebrow">CoCreate / Waveform</p>
+                <h1>See your sound.</h1>
+                <p class="intro">Explore three views of the same audio. Use your microphone or try sample audio.</p>
+            </header>
+            <div class="toolbar">
+                <div class="controls">
+                    <button id="control" type="button"
+                        waveform-query="$document #wave" waveform-fft-size="2048"
+                        aria-label="Start microphone"><span class="mic-icon" aria-hidden="true">●</span><span id="control-label">Start microphone</span></button>
+                    <button id="sample" type="button" class="secondary">Try sample audio</button>
+                </div>
+                <p id="status" role="status"><span class="status-dot" aria-hidden="true"></span><span id="status-text">Ready when you are</span></p>
+            </div>
+            <section class="visual-card hero" aria-labelledby="bars-title">
+                <div class="card-heading"><div><p class="eyebrow">01 / Voice activity</p><h2 id="bars-title">Recording history</h2></div><select id="bar-view" aria-label="Bar visualization"><option value="recording">Recording history</option><option value="mirror">Centered mirror</option></select></div>
+                <canvas id="bars" width="1440" height="400" role="img" aria-label="Audio amplitude history scrolling from right to left"></canvas>
+                <p id="bars-caption" class="caption">New sound enters at the right. Earlier sound moves left, preserving its shape.</p>
+            </section>
+            <div class="visual-grid">
+                <section class="visual-card" aria-labelledby="line-title">
+                    <div class="card-heading"><div><p class="eyebrow">02 / Signal</p><h2 id="line-title">Waveform line</h2></div></div>
+                    <canvas id="wave" width="960" height="320" role="img" aria-label="Live audio waveform"></canvas>
+                    <p class="caption">The shape of the audio signal, drawn directly from its samples.</p>
+                </section>
+                <section class="visual-card" aria-labelledby="level-title">
+                    <div class="card-heading"><div><p class="eyebrow">03 / Volume</p><h2 id="level-title">Level meter</h2></div><span id="level-value" class="level-value">0%</span></div>
+                    <canvas id="meter" width="960" height="320" role="img" aria-label="Current relative audio level"></canvas>
+                    <p class="caption">Relative signal strength. This is a visual level, not a calibrated loudness reading.</p>
+                </section>
+            </div>
+            <footer>Sample audio is generated locally. Microphone audio is visualized in your browser.</footer>
+        </main>
+        <script src="../dist/CoCreate-waveform.js"></script>
+        <script src="demo.js"></script>
+    </body>
+</html>
