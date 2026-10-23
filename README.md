@@ -15,9 +15,9 @@ npm start
 python3 -m http.server 8080
 ```
 
-Open `http://localhost:8080/demo/index.html` to compare a recording-style history,
-centered mirrored bars, a waveform line, and a level meter. Recording history
-scrolls from right to left and remains visible after stopping. Click Start microphone or Try sample audio. A remote host needs
+Open `http://localhost:8080/demo/index.html` and use the view selector to compare
+the live line, mirrored bars, and recording history. Click Start microphone or
+Try sample audio. A remote host needs
 HTTPS for microphone access. The browser handles microphone permission and may
 require a user gesture to resume audio processing.
 
@@ -44,16 +44,25 @@ There is no required component stylesheet: canvas stroke color follows its CSS
 | `waveform`          | Lifecycle: `start` / `stop` commands, `end` completion; empty initializes an idle toggle. |
 | `waveform-query`    | CoCreate query selecting the first target canvas.                                         |
 | `waveform-fft-size` | Samples per frame; power of two from 32–32768, default 2048.                              |
+| `waveform-visualization` | Canvas style: `line` (default), centered mirrored `bars`, or scrolling `history`. |
 | `waveform-active`   | Output flag: `true` after analysis starts; removed on stop or failure.                    |
 
-`waveform-query` alone initializes a control and attaches its click listener. The
-main `waveform` attribute is created on first start. Both attributes are watched
-for existing elements, added nodes, and later attribute changes.
+The built-in visualizations need only a target canvas and CSS `color`. `line`
+draws the current sample frame, and `bars` mirrors that live signal around the
+center. Both redraw as new audio arrives. `history` instead records recent audio
+levels and scrolls them from right to left. History remains on the canvas after
+stopping and resets when the next session starts. Without a canvas target, the
+component emits data for a custom renderer.
 
-A canvas can itself be the host with `<canvas waveform>` and no query. Without a
-canvas target, the component emits data for a custom renderer. Attributes are
-read when a session starts. They can be assigned by separate CoCreate Events
-controls. Clicks, API calls, Actions, and attribute commands share the lifecycle:
+`waveform-query` alone initializes a control and attaches its click listener. The
+main `waveform` attribute is created on first start. Initialization attributes
+are watched for existing elements, added nodes, and later attribute changes.
+The visualization can also be changed while analysis is running.
+
+A canvas can itself be the host with `<canvas waveform>` and no query. Capture
+attributes are read when a session starts and can be assigned by separate
+CoCreate Events controls. Clicks, API calls, Actions, and attribute commands
+share the lifecycle:
 
 - `start`: setup requested; analysis runs once audio is available.
 - `stop`: animation stops and the audio graph/resources are being released.

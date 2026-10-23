@@ -177,7 +177,7 @@
 
 						<div class="flex-grow:1 min-width:300px width:100%">
 							<pre>
-                                <code class="language-html">&lt;button type=&quot;button&quot; waveform-query=&quot;$document #wave&quot; waveform-fft-size=&quot;2048&quot; aria-label=&quot;Toggle waveform&quot;&gt;Start / stop&lt;/button&gt;
+                                <code class="language-html">&lt;button type=&quot;button&quot; waveform-query=&quot;$document #wave&quot; waveform-visualization=&quot;history&quot; waveform-fft-size=&quot;2048&quot; aria-label=&quot;Toggle waveform&quot;&gt;Start / stop&lt;/button&gt;
 &lt;canvas id=&quot;wave&quot; width=&quot;960&quot; height=&quot;240&quot; aria-label=&quot;Live waveform&quot;&gt;&lt;/canvas&gt;</code>
                             </pre>
 						</div>
@@ -216,6 +216,10 @@
 								>
 							</h4>
 							<p>Set start or stop to control analysis. The component sets end after cleanup. Use waveform-query to select the target canvas.</p>
+						</li>
+						<li class="padding:15px_0px border-bottom:1px_solid_lightgrey">
+							<h4><span>waveform-visualization</span><span class="cocreate-badge success">line / bars / history</span></h4>
+							<p>Select a built-in canvas style. Line is the default, bars mirrors the current signal around the center, and history scrolls recent audio levels from right to left and remains visible after stopping.</p>
 						</li>
 					</ul>
 				</div>

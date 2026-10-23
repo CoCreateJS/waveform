@@ -27,9 +27,8 @@ function setStatus(element, status) {
         element.setAttribute("waveform", status);
 }
 
-function draw(current) {
+function drawLine(current) {
     const { canvas, drawing, samples } = current;
-    if (!drawing) return;
     const { width, height } = canvas;
     drawing.clearRect(0, 0, width, height);
     drawing.beginPath();
@@ -42,6 +41,57 @@ function draw(current) {
         else drawing.lineTo(x, y);
     }
     drawing.stroke();
+}
+
+function drawBars(current) {
+    const { canvas, drawing, samples } = current;
+    const { width, height } = canvas;
+    const center = height / 2;
+    const count = 48;
+    const step = width / count;
+    drawing.fillStyle = getComputedStyle(canvas).color;
+    for (let index = 0; index < count / 2; index++) {
+        const from = Math.floor(index * samples.length / (count / 2));
+        const to = Math.floor((index + 1) * samples.length / (count / 2));
+        let peak = 0;
+        for (let sample = from; sample < to; sample++) peak = Math.max(peak, Math.abs(samples[sample]));
+        const amplitude = Math.max(2, peak * center);
+        const x = width / 2 + (index + 0.5) * step;
+        drawing.fillRect(x, center - amplitude, step * 0.56, amplitude * 2);
+        drawing.fillRect(width - x - step * 0.56, center - amplitude, step * 0.56, amplitude * 2);
+    }
+}
+
+function drawHistory(current) {
+    const { canvas, drawing, samples, history } = current;
+    const { width, height } = canvas;
+    const count = 96;
+    const now = performance.now();
+    if (now - current.lastHistorySample >= 50) {
+        let squares = 0;
+        for (const sample of samples) squares += sample * sample;
+        history.push(Math.min(1, Math.sqrt(squares / samples.length) * 3));
+        if (history.length > count) history.shift();
+        current.lastHistorySample = now;
+    }
+    const center = height / 2;
+    const step = width / count;
+    drawing.fillStyle = getComputedStyle(canvas).color;
+    for (let index = 0; index < history.length; index++) {
+        const amplitude = Math.max(2, history[index] * center);
+        const x = width - (history.length - index) * step;
+        drawing.fillRect(x, center - amplitude, step * 0.62, amplitude * 2);
+    }
+}
+
+function draw(current) {
+    if (!current.drawing) return;
+    const { drawing, canvas, element } = current;
+    drawing.clearRect(0, 0, canvas.width, canvas.height);
+    const mode = element.getAttribute("waveform-visualization") || "line";
+    if (mode === "bars") drawBars(current);
+    else if (mode === "history") drawHistory(current);
+    else drawLine(current);
 }
 
 function update(current) {
@@ -73,7 +123,8 @@ function release(current) {
         track.removeEventListener("ended", current.onEnded);
     }
     if (current.ownsStream) current.stream?.getTracks().forEach(track => track.stop());
-    current.drawing?.clearRect(0, 0, current.canvas.width, current.canvas.height);
+    if (current.element.getAttribute("waveform-visualization") !== "history")
+        current.drawing?.clearRect(0, 0, current.canvas.width, current.canvas.height);
     current.cleanup = Promise.resolve().then(() => {
         if (current.ownsContext && current.context?.state !== "closed") return current.context?.close();
     }).catch(error => {
@@ -110,6 +161,8 @@ function start(options = {}, element) {
     setStatus(element, "start");
     current.ready = (async () => {
         try {
+            current.history = [];
+            current.lastHistorySample = -Infinity;
             const Constructor = window.AudioContext || window.webkitAudioContext;
             if (!options.context && !Constructor) throw new Error("Web Audio API is not supported.");
             current.context = options.context || new Constructor();

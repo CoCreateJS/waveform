@@ -35,8 +35,8 @@ function runtime(options = {}) {
     const input = stream(), requests = [], points = [];
     let nextFrame = 0;
     canvas.canvas = true; canvas.width = 300; canvas.height = 150;
-    const drawing = { clears: 0, strokes: 0,
-        clearRect() { this.clears++; }, beginPath() { points.length = 0; },
+    const drawing = { clears: 0, strokes: 0, fills: 0,
+        clearRect() { this.clears++; }, fillRect() { this.fills++; }, beginPath() { points.length = 0; },
         moveTo(x, y) { points.push([x, y]); }, lineTo(x, y) { points.push([x, y]); },
         stroke() { this.strokes++; }
     };
@@ -80,6 +80,7 @@ function runtime(options = {}) {
         actions: { init: value => definitions.push(value) },
         queryElements: () => options.missingTarget ? [] : [canvas],
         getComputedStyle: () => ({ color: 'rgb(0, 128, 0)' }),
+        performance: { now: () => Date.now() },
         requestAnimationFrame(callback) { frames.set(++nextFrame, callback); return nextFrame; },
         cancelAnimationFrame(id) { frames.delete(id); },
         CustomEvent, Float32Array
@@ -120,6 +121,32 @@ test('analysis exposes floating-point waveform samples and draws them on the que
     app.tick();
     assert.equal(aliases, 2);
     assert.equal(app.frames.size, 1);
+    await app.api.stop(app.element);
+});
+
+test('built-in mirrored bars draw from the live signal samples', async () => {
+    const app = runtime();
+    app.element.setAttribute('waveform-query', '#wave');
+    app.element.setAttribute('waveform-visualization', 'bars');
+    app.element.setAttribute('waveform-fft-size', '32');
+    await app.api.start({ element: app.element, stream: app.input });
+    assert.equal(app.drawing.fills, 48);
+    assert.equal(app.drawing.strokes, 0);
+    await app.api.stop(app.element);
+});
+
+test('built-in history keeps its final drawing after stop and clears on the next start', async () => {
+    const app = runtime();
+    app.element.setAttribute('waveform-query', '#wave');
+    app.element.setAttribute('waveform-visualization', 'history');
+    app.element.setAttribute('waveform-fft-size', '32');
+    await app.api.start({ element: app.element, stream: app.input });
+    assert.ok(app.drawing.fills > 0);
+    const clears = app.drawing.clears;
+    await app.api.stop(app.element);
+    assert.equal(app.drawing.clears, clears);
+    await app.api.start({ element: app.element, stream: app.input });
+    assert.ok(app.drawing.clears > clears);
     await app.api.stop(app.element);
 });
 
