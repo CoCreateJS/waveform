@@ -1,6 +1,6 @@
 /*!
  * CoCreate-waveform — Web Audio waveform analysis and visualization.
- * https://cocreate.app
+ * https://CoCreateJS.com
  * Released under the MIT license
  */
 import observer from "@cocreate/observer";
