@@ -13,7 +13,7 @@ Fork the [project on Github](https://github.com/CoCreate-app/CoCreate-waveform) 
 ```
 git clone https://github.com/contributor/CoCreate-waveform.git
 cd CoCreate-waveform
-git remote add upstream https://gitlab.com/cocreatejs/cocreate-waveform.git
+git remote add upstream https://github.com/cocreatejs/cocreate-waveform.git
 ```
 
 ## Create a Topic Branch

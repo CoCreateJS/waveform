@@ -74,7 +74,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://gitlab.com/cocreatejs/cocreate-waveform.git"
+    "url": "git+https://github.com/cocreatejs/cocreate-waveform.git"
   },
   "author": "CoCreate LLC",
   "license": "MIT",
