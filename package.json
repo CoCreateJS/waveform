@@ -21,52 +21,6 @@
   "publishConfig": {
     "access": "public"
   },
-  "cocreate": {
-    "environment": [
-      "client"
-    ],
-    "interface": {
-      "schemaVersion": 1,
-      "summary": "Declarative audio waveform analysis and visualization for CoCreate using the Web Audio API.",
-      "source": "src/index.js",
-      "declarative": {
-        "selectors": [
-          "[waveform-query], [waveform]"
-        ],
-        "attributes": [
-          {
-            "name": "actions"
-          },
-          {
-            "name": "aria-disabled"
-          },
-          {
-            "name": "waveform"
-          },
-          {
-            "name": "waveform-active"
-          },
-          {
-            "name": "waveform-fft-size"
-          },
-          {
-            "name": "waveform-query"
-          },
-          {
-            "name": "waveform-visualization"
-          }
-        ]
-      },
-      "api": {
-        "exports": [
-          "init",
-          "start",
-          "stop",
-          "toggle"
-        ]
-      }
-    }
-  },
   "scripts": {
     "start": "webpack --config webpack.config.js",
     "build": "webpack --mode=production --config webpack.config.js",

@@ -141,6 +141,11 @@ function release(current) {
     return current.cleanup;
 }
 
+/**
+ *
+ * @public
+ * @environment client
+ */
 function start(options = {}, element) {
     if (options.nodeType) {
         element = options;
@@ -218,12 +223,22 @@ function start(options = {}, element) {
     return current.ready;
 }
 
+/**
+ *
+ * @public
+ * @environment client
+ */
 function stop(element) {
     const current = sessions.get(element);
     if (!current) setStatus(element, "end");
     return release(current);
 }
 
+/**
+ *
+ * @public
+ * @environment client
+ */
 function toggle(element) {
     return sessions.has(element) ? stop(element) : start(element);
 }
@@ -234,6 +249,11 @@ function applyCommand(element) {
     else if (command === "stop") void stop(element);
 }
 
+/**
+ *
+ * @public
+ * @environment client
+ */
 function init(elements = document.querySelectorAll(selector)) {
     if (elements.nodeType) elements = [elements];
     for (const element of elements) {
@@ -292,3 +312,81 @@ observer.init({
 init();
 
 export default { init, start, stop, toggle };
+
+/**
+ *
+ * @name actions
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name aria-disabled
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name waveform
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name waveform-active
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name waveform-fft-size
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name waveform-query
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ *
+ * @name waveform-visualization
+ * @kind member
+ * @attribute
+ * @environment client
+ */
+
+/**
+ * Declarative audio waveform analysis and visualization for CoCreate using the Web Audio API.
+ *
+ * @module waveform
+ * @environment client
+ */
+
+/**
+ * Declarative selectors recognized by this module.
+ *
+ * @name declarative-selectors
+ * @kind member
+ * @selectors
+ * @environment client
+ * @example
+ * ```json
+ * [
+ *   "[waveform-query], [waveform]"
+ * ]
+ * ```
+ */
