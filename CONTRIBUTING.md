@@ -1,19 +1,19 @@
 # Contributing to CoCreate-waveform
 
-This project is work of [many contributors](https://github.com/CoCreateJS/CoCreate-waveform/graphs/contributors).
-You're encouraged to submit [pull requests](https://github.com/CoCreateJS/CoCreate-waveform/pulls),
-[propose features and discuss issues](https://github.com/CoCreateJS/CoCreate-waveform/issues).
+This project is work of [many contributors](https://github.com/CoCreateJS/waveform/graphs/contributors).
+You're encouraged to submit [pull requests](https://github.com/CoCreateJS/waveform/pulls),
+[propose features and discuss issues](https://github.com/CoCreateJS/waveform/issues).
 
 In the examples below, substitute your Github username for `contributor` in URLs.
 
 ## Fork the Project
 
-Fork the [project on Github](https://github.com/CoCreateJS/CoCreate-waveform) and check out your copy.
+Fork the [project on Github](https://github.com/CoCreateJS/waveform) and check out your copy.
 
 ```
 git clone https://github.com/contributor/CoCreate-waveform.git
 cd CoCreate-waveform
-git remote add upstream https://github.com/cocreatejs/cocreate-waveform.git
+git remote add upstream https://github.com/CoCreateJS/cocreate-waveform.git
 ```
 
 ## Create a Topic Branch
@@ -75,7 +75,7 @@ git push origin my-feature-branch
 
 ## Make a Pull Request
 
-Go to [https://github.com/CoCreateJS/CoCreate-waveform](https://github.com/CoCreateJS/CoCreate-waveform) and select your feature branch.
+Go to [https://github.com/CoCreateJS/waveform](https://github.com/CoCreateJS/waveform) and select your feature branch.
 Click the 'Pull Request' button and fill out the form. Pull requests are usually reviewed within a few days.
 
 ## Rebase
